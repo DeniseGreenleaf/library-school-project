@@ -48,7 +48,7 @@ public class UserController {
         return ResponseEntity.ok(loans);
     }
 
-    // Fixat endpoint-path (tog bort dubbel /users)
+
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<User> users = userService.getAllUsers();
@@ -56,7 +56,7 @@ public class UserController {
         return ResponseEntity.ok(userDtos);
     }
 
-    // Exception handling
+    // Exception handling - ska bort och ersättas genom exceptionhandler klass-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());

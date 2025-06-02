@@ -17,7 +17,7 @@ public class DTOMapper {
         );
     }
 
-    // Manuell mappning för User (utan password)
+    // Manuell mappning User ej password.
     public static UserDto toUserDTO(User user) {
         return new UserDto(
                 user.getUserId(),

@@ -16,19 +16,19 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    // GET /authors - lista alla
+    // GET /authors lista alla författare
     @GetMapping
     public ResponseEntity<List<Author>> getAllAuthors() {
         return ResponseEntity.ok(authorService.getAllAuthors());
     }
 
-    // GET /authors/name/{lastName} - hämta via efternamn
+    // GET /authors/name/{lastName} hämta med efternamn
     @GetMapping("/name/{lastName}")
     public ResponseEntity<List<Author>> getAuthorsByLastName(@PathVariable String lastName) {
         return ResponseEntity.ok(authorService.findAuthorsByLastName(lastName));
     }
 
-    // POST /authors - skapa ny
+    // POST /authors  skapa ny
     @PostMapping
     public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
         try {
@@ -39,9 +39,4 @@ public class AuthorController {
         }
     }
 
-    // Exceptionhandler (valfritt)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
 }

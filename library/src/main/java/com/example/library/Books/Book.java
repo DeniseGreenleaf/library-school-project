@@ -10,13 +10,13 @@ public class Book {
 
     @Id
     @Column(name = "book_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookId;
 
     @Column(name = "title", nullable = false, length = 255)
     private String title;
 
-    // Relation till Author-tabellen via author_id
+    // Relation till Authortabellen med author_id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     @JsonBackReference
@@ -70,7 +70,7 @@ public class Book {
         this.author = author;
     }
 
-    // Convenience metod för att få författarnamn (behövs för sökning)
+    // Convenience metod för att få författarnamn (för sökning)
     public String getAuthorName() {
         if (author != null) {
             return author.getFirstName() + " " + author.getLastName();

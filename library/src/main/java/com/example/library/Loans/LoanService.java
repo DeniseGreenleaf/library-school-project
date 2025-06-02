@@ -7,6 +7,7 @@ import com.example.library.DTOMapper;
 import com.example.library.User.User;
 import com.example.library.User.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,6 +29,7 @@ public class LoanService {
         return loanRepository.findByUserUserId(userId);
     }
 
+    @Transactional
     public Loan loanBook(Long userId, Long bookId) {
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));

@@ -13,15 +13,6 @@ public class LoanController {
             this.loanService = loanService;
     }
 
-//    @PostMapping
-//    public ResponseEntity<Loan> loanBook(@RequestParam Long userId, @RequestParam Long bookId) {
-//            try {
-//                Loan loan = loanService.loanBook(userId, bookId);
-//                return ResponseEntity.status(201).body(loan);
-//            } catch (IllegalArgumentException e) {
-//                return ResponseEntity.badRequest().body(null);
-//            }
-//    }
 
     @PostMapping
     public ResponseEntity<Loan> loanBook(@RequestBody LoanRequestDTO request) {

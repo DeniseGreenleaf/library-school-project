@@ -69,7 +69,7 @@ public class UserService {
             throw new IllegalArgumentException("Lösenord får inte vara tomt");
         }
 
-        // Enkel email-validering
+        // email-validering
         if (!user.getEmail().contains("@")) {
             throw new IllegalArgumentException("Ogiltig email-format");
         }

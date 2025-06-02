@@ -2,7 +2,6 @@ package com.example.library.Author;
 
 
 import com.example.library.Books.Book;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -31,7 +30,7 @@ public class Author {
     private String nationality;
 
 
-    // En författare kan ha många böcker
+    // En författare många böcker
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
    @JsonManagedReference
     private List<Book> book;
