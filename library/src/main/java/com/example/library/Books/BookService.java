@@ -120,7 +120,7 @@ public class BookService {
 
 
 
-    // METODER MED @QUERY
+    // METODER MED QUERY
 
     public List<Book> getBooksByAuthorId(Long authorId) {
         if (!authorRepository.existsById(authorId)) {

@@ -14,7 +14,6 @@ public class LoanRequestDTO {
 
     // getters och setters
 
-
     public Long getUserId() {
         return userId;
     }

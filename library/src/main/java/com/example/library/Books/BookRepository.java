@@ -14,8 +14,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
         // JPA ger : findAll(), findById(), save(), deleteById(), existsById() findAll(Pageable pageable) för paginering
 
-        // custom queries för specifika metoder
-
         // Spring Data JPA skapar automatiskt dessa metoder baserat på metodnamnet
 
      // Sök böcker efter titel (case-insensitive) - med paginering
@@ -83,7 +81,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             nativeQuery = true)
     Object[] getBookStatistics();
 
-    // OPTIONAL RETURN TYPES
+    // OPTIONAL Return
 
     Optional<Book> findByTitle(String title);
 

@@ -47,7 +47,7 @@ public class BookController {
 
         Page<Book> books;
 
-        // Om inga filter används, return alla böcker
+        // Om inga filter används, returna alla böcker
         if ((title == null || title.trim().isEmpty()) &&
                 (author == null || author.trim().isEmpty()) &&
                 (minAvailableCopies == null || minAvailableCopies <= 0)) {
@@ -65,7 +65,7 @@ public class BookController {
         }
     }
 
-    // GET /books/{id} Optional return type
+    // GET /books/{id} Optional return
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable Long id) {
         try {
@@ -146,7 +146,7 @@ public class BookController {
         }
     }
 
-    // Search exakt title med Optional return
+    //GET  Search exakt title med Optional return
     @GetMapping("/search/title/{title}")
     public ResponseEntity<Book> findBookByTitle(@PathVariable String title) {
         try {
@@ -160,10 +160,7 @@ public class BookController {
         }
     }
 
-    //   --- Endpoints med query ----
-
-
-    // Books by author ID
+    // GET Books med author ID
     @GetMapping("/author/{authorId}")
     public ResponseEntity<List<Book>> getBooksByAuthor(@PathVariable Long authorId) {
         try {
@@ -178,7 +175,7 @@ public class BookController {
         }
     }
 
-    // Books with minimum copies
+    // GET Books tillgängliga kopior
     @GetMapping("/stock")
     public ResponseEntity<List<Book>> getBooksWithMinimumCopies(
             @RequestParam(defaultValue = "1") Integer minCopies) {
@@ -193,7 +190,7 @@ public class BookController {
     }
 
 
-    // Low stock books
+    //GET Low stock books
     @GetMapping("/low-stock")
     public ResponseEntity<List<Book>> getLowStockBooks(
             @RequestParam(defaultValue = "3") Integer threshold) {
@@ -207,7 +204,7 @@ public class BookController {
         }
     }
 
-    // Advanced search using native SQL
+    //GET Avancerad sökning
     @GetMapping("/advanced-search")
     public ResponseEntity<List<Book>> advancedSearch(
             @RequestParam(required = false) String title,
@@ -223,7 +220,7 @@ public class BookController {
         }
     }
 
-    // Stats endpoint
+    // GET Stats
     @GetMapping("/stats/available-count")
     public ResponseEntity<Long> getAvailableBooksCount() {
         try {
@@ -234,7 +231,7 @@ public class BookController {
         }
     }
 
-    // Most available books
+    //GET tillgängliga books
     @GetMapping("/most-available")
     public ResponseEntity<List<Book>> getMostAvailableBooks() {
         try {
@@ -267,17 +264,3 @@ public class BookController {
     }
 
 }
-
-// exempel i postman
-//GET /books
-//GET /books/1
-//GET /books/author/1
-//GET /books/stock?minCopies=5
-//GET /books/low-stock?threshold=2
-//GET /books/advanced-search
-//GET /books/stats/available-count
-//GET /books?title=hobbit
-//GET /books?author=tolkien
-//GET /books?minAvailableCopies=3
-//GET /books?page=0&size=10&sortBy=title&sortDir=asc
-//GET /books?sortBy=availableCopies&sortDir=desc

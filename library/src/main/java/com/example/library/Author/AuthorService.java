@@ -1,5 +1,6 @@
 package com.example.library.Author;
 
+import Exceptions.AuthorNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,20 +19,33 @@ public class AuthorService {
     }
 
     public List<Author> findAuthorsByLastName(String lastName) {
-        return authorRepository.findByLastNameIgnoreCase(lastName);
+        if (lastName == null || lastName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Last name cannot be empty");
+        }
+        return authorRepository.findByLastNameIgnoreCase(lastName.trim());
     }
 
     public Author createAuthor(Author author) {
         validateAuthor(author);
+
+        author.setFirstName(author.getFirstName().trim());
+        author.setLastName(author.getLastName().trim());
+
         return authorRepository.save(author);
     }
 
     public Author getAuthorById(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Author ID must be a positive number");
+        }
         return authorRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Author with ID " + id + " not found"));
+                .orElseThrow(() -> new AuthorNotFoundException(id));
     }
 
     private void validateAuthor(Author author) {
+        if (author == null) {
+            throw new IllegalArgumentException("Author cannot be null");
+        }
         if (author.getFirstName() == null || author.getFirstName().trim().isEmpty()) {
             throw new IllegalArgumentException("First name is required");
         }

@@ -45,6 +45,46 @@ class LoanServiceTest {
     }
 
     @Test
+    void loanBook_shouldSetCorrectDueDate_whenLoanCreated() {
+        // Arrange
+        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(testBook));
+        when(loanRepository.save(any(Loan.class))).thenAnswer(i -> i.getArgument(0));
+
+        LocalDate expectedDueDate = LocalDate.now().plusDays(14); // 14 dagar framåt
+
+        // Act
+        Loan loan = loanService.loanBook(1L, 1L);
+
+        // Assert
+        assertNotNull(loan);
+        assertEquals(expectedDueDate, loan.getReturnDate(),
+                "Due date should be set to exactly 14 days from loan date");
+        assertEquals(LocalDate.now(), loan.getLoanDate(),
+                "Loan date should be today");
+
+        // Verify
+        verify(loanRepository).save(any(Loan.class));
+    }
+
+
+    @Test
+    void loanBook_shouldThrow_whenNoAvailableCopies() {
+        // Arrange
+        testBook.setAvailableCopies(0);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(testBook));
+
+        // Act + Assert
+        IllegalStateException ex = assertThrows(IllegalStateException.class,
+                () -> loanService.loanBook(1L, 1L));
+
+        assertEquals("Book is not available for loan", ex.getMessage());
+        verify(loanRepository, never()).save(any());
+    }
+
+
+    @Test
     void loanBook_shouldSucceed_whenUserAndBookExistAndBookAvailable() {
         // Arrange
         when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
@@ -100,18 +140,4 @@ class LoanServiceTest {
         verify(loanRepository, never()).save(any());
     }
 
-    @Test
-    void loanBook_shouldThrow_whenNoAvailableCopies() {
-        // Arrange
-        testBook.setAvailableCopies(0);
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
-        when(bookRepository.findById(1L)).thenReturn(Optional.of(testBook));
-
-        // Act + Assert
-        IllegalStateException ex = assertThrows(IllegalStateException.class,
-                () -> loanService.loanBook(1L, 1L));
-
-        assertEquals("Book is not available for loan", ex.getMessage());
-        verify(loanRepository, never()).save(any());
-    }
 }

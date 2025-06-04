@@ -17,16 +17,32 @@ public class BookWithDetailsDTO {
     }
 
     // Getters och Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getAuthorName() { return authorName; }
-    public void setAuthorName(String authorName) { this.authorName = authorName; }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public int getAvailableCopies() { return availableCopies; }
-    public void setAvailableCopies(int availableCopies) { this.availableCopies = availableCopies; }
+    public String getAuthorName() {
+        return authorName;
+    }
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    public int getAvailableCopies() {
+        return availableCopies;
+    }
+    public void setAvailableCopies(int availableCopies) { this.availableCopies = availableCopies;
+    }
 
 }

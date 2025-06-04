@@ -1,9 +1,9 @@
 package com.example.library.User;
 
+import Exceptions.UserNotFoundException;
 import com.example.library.DTOMapper;
 import com.example.library.Loans.Loan;
 import com.example.library.Loans.LoanService;
-import com.example.library.UserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +22,22 @@ public class UserController {
         this.loanService = loanService;
     }
 
+    //Get email med email.
     @GetMapping("/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        return userService.getUserByEmail(email)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+
+        try {
+            return userService.getUserByEmail(email)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
+    // POST skapa användare
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
@@ -36,29 +45,42 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CREATED).body(created);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
+    // GET hämta användar lån med user id
     @GetMapping("/{userId}/loans")
     public ResponseEntity<List<Loan>> getUserLoans(@PathVariable Long userId) {
-        if (userService.getUserById(userId).isEmpty()) {
-            return ResponseEntity.notFound().build();
+
+        try {
+            if (userService.getUserById(userId).isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            List<Loan> loans = loanService.getLoansByUserId(userId);
+            return ResponseEntity.ok(loans);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        List<Loan> loans = loanService.getLoansByUserId(userId);
-        return ResponseEntity.ok(loans);
     }
 
 
+    //GET hämta alla användare
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        List<UserDto> userDtos = DTOMapper.toUserDTOList(users);
-        return ResponseEntity.ok(userDtos);
+
+        try {
+            List<User> users = userService.getAllUsers();
+            List<UserDto> userDtos = DTOMapper.toUserDTOList(users);
+            return ResponseEntity.ok(userDtos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    // Exception handling - ska bort och ersättas genom exceptionhandler klass-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
 }

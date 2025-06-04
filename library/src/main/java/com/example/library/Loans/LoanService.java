@@ -49,7 +49,7 @@ public class LoanService {
             loan.setUser(user);
             loan.setBook(book);
             loan.setLoanDate(LocalDate.now());
-            loan.setReturnDate(LocalDate.now().plusWeeks(2)); // Exempel: lån i 2 veckor
+            loan.setReturnDate(LocalDate.now().plusDays(14));
             loan.setReturned(false);
 
         return loanRepository.save(loan);
@@ -84,7 +84,7 @@ public class LoanService {
             throw new IllegalStateException("Cannot extend a returned loan");
         }
 
-        loan.setReturnDate(loan.getReturnDate().plusWeeks(1)); // Förläng med 1 vecka
+        loan.setReturnDate(loan.getReturnDate().plusWeeks(1));
 
         return loanRepository.save(loan);
     }

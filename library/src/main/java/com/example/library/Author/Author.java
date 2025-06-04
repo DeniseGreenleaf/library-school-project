@@ -54,9 +54,6 @@ public class Author {
         return authorId;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -74,21 +71,6 @@ public class Author {
         this.lastName = lastName;
     }
 
-    public Integer getBirthYear() {
-        return birthYear;
-    }
-
-    public void setBirthYear(Integer birthYear) {
-        this.birthYear = birthYear;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
 
     public List<Book> getBook() {
         return book;

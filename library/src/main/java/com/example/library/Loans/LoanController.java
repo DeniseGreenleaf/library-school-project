@@ -44,8 +44,5 @@ public class LoanController {
             } catch (IllegalArgumentException e) {
                 return ResponseEntity.notFound().build();
             }
-//            catch (IllegalArgumentException e) {
-//                return ResponseEntity.badRequest().build();
-//            }
     }
 }

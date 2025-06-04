@@ -18,7 +18,7 @@ public class Loan {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"password", "registrationDate"}) // Ignorera känslig data från User
+    @JsonIgnoreProperties({"password", "registrationDate"})
     private User user;
 
 
