@@ -1,5 +1,6 @@
 package com.example.library.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
@@ -24,7 +25,13 @@ public class User {
     @Column(name = "email", unique = true, length = 255)
     private String email;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // Tillåt skrivning men dölj vid läsning
+    @Column(name = "roles", length = 255)
+    private String roles;
+
+    @Column(name = "enabled")
+    private boolean enabled = true;
+
+   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // Tillåt skrivning men dölj vid läsning
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -42,6 +49,15 @@ public class User {
         this.password = password;
         this.registrationDate = registrationDate;
     }
+
+    public User(String email, String password, String roles) {
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+        this.enabled = true;
+    }
+
+
 
     public Long getUserId() {
         return userId;
@@ -89,6 +105,22 @@ public class User {
 
     public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

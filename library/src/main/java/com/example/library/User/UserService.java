@@ -3,6 +3,7 @@ package com.example.library.User;
 import Exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private static final String EMAIL_REGEX =
             "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
@@ -22,8 +24,9 @@ public class UserService {
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getAllUsers() {
@@ -63,6 +66,17 @@ public class UserService {
         // Sätt registreringsdatum om det saknas
         if (user.getRegistrationDate() == null) {
             user.setRegistrationDate(LocalDate.now());
+        }
+
+        // Hasha lösenordet innan sparning
+        if (!user.getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
+            throw new IllegalArgumentException("Lösenord måste vara minst 8 tecken, innehålla bokstäver och siffror");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // Sätt default-roll om det saknas
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            user.setRoles("USER");
         }
 
         try {

@@ -13,6 +13,13 @@ public class UserDto {
         this.email = email;
     }
 
+    public UserDto(User user) {
+        this.id = user.getUserId();
+        this.name = user.getFirstName() + " " + user.getLastName(); // eller anpassa
+        this.email = user.getEmail();
+    }
+
+
     // Getters och Setters
     public Long getId() {
         return id;
